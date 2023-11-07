@@ -1,0 +1,36 @@
+---
+const { time = '8 Jun 2024' } = Astro.props;
+---
+
+<astro-countdown data-time={time}>
+  <span>0</span>
+</astro-countdown>
+
+<script>
+	class Countdown extends HTMLElement {
+		constructor() {
+			super();
+			const { time } = this.dataset
+			const storkKmPerDay = 300
+			const secondsInADay = 60 * 60 * 24
+      const storkKMPerSec = storkKmPerDay / secondsInADay
+			const countTo = new Date(time).getTime()
+      const createKMs = () => {
+        const now = new Date().getTime()
+        const timeDifference = countTo - now
+        const seconds = Math.ceil(timeDifference / 1000);
+        const totalKMs = seconds * storkKMPerSec
+
+        const countSpan = this.querySelector('span');
+        countSpan.textContent = totalKMs.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+      }
+
+      createKMs()
+
+      setInterval(createKMs, 1000)
+		}
+	}
+
+	// Tell the browser to use our AstroHeart class for <astro-heart> elements.
+	customElements.define('astro-countdown', Countdown);
+</script>
