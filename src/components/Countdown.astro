@@ -1,9 +1,58 @@
 ---
+import '@fontsource/wellfleet';
 const { time = '8 Jun 2024' } = Astro.props;
+const numbers = Array.from({length: 11}).map((_, i) => {
+	const l = i.toString()
+	return l.charAt(l.length - 1);
+})
+function isValidUnitNumber(str) {
+  return /^[0-9]+$/.test(str);
+}
 ---
 
+<style>
+	astro-countdown {
+		font-family: "Wellfleet", cursive;  
+		font-size: 0.75em;
+		display: inline-block;
+		position: relative;
+	}
+	span[aria-hidden="false"] {
+		position: absolute;
+		inset: 0;
+		opacity: 0;
+	}
+
+	span[data-unit] {
+		display: inline-flex;
+		flex-direction: column;
+		overflow: hidden;
+		height: 1em;
+		pointer-events: none;
+
+		> span {
+			transition: translate 300ms
+		};
+	}
+</style>
+
 <astro-countdown data-time={time}>
-  <span>0</span>
+	<style is:inline />
+	<span aria-hidden="true">
+		{
+			Array.from((111_111.11)
+				.toLocaleString("it-IT", {
+					minimumFractionDigits: 2, 
+					maximumFractionDigits: 2
+			})).map((s, i, a) => {
+				if(isValidUnitNumber(s)) return <span data-unit>
+					{numbers.map(i => <span>{i}</span>)}
+				</span>
+				return s
+			})
+		}
+	</span>
+	<span aria-hidden="false" />
 </astro-countdown>
 
 <script>
@@ -11,23 +60,44 @@ const { time = '8 Jun 2024' } = Astro.props;
 		constructor() {
 			super();
 			const { time } = this.dataset
+			const style = this.querySelector("style")
 			const storkKmPerDay = 300
 			const secondsInADay = 60 * 60 * 24
-      const storkKMPerSec = storkKmPerDay / secondsInADay
+			const storkKMPerSec = storkKmPerDay / secondsInADay
 			const countTo = new Date(time).getTime()
-      const createKMs = () => {
-        const now = new Date().getTime()
-        const timeDifference = countTo - now
-        const seconds = Math.ceil(timeDifference / 1000);
-        const totalKMs = seconds * storkKMPerSec
+			const calculateKms = () => {
+				const now = new Date().getTime()
+				const timeDifference = countTo - now
+				const seconds = Math.ceil(timeDifference / 1000);
+				const totalKMs = seconds * storkKMPerSec
 
-        const countSpan = this.querySelector('span');
-        countSpan.textContent = totalKMs.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
-      }
+				return totalKMs
+			}
 
-      createKMs()
+			const placeIt = () => {
+        const countSpan = this.querySelector('span[aria-hidden="false"]');
+        countSpan.textContent = calculateKms().toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+			}
 
-      setInterval(createKMs, 1000)
+			const animateIt = () => {
+				const spans = Array.from(this.querySelectorAll("span[data-unit]")).reverse()
+				const kms = Array.from(Math.floor(calculateKms() * 100).toString()).reverse()
+				const content = spans.reduce((aggr, _, i) => {
+					if(!kms[i]) return `${aggr}
+						span[data-unit]:nth-of-type(${spans.length - i}){ display: none;}
+					`
+					return `${aggr}
+						span[data-unit]:nth-of-type(${spans.length - i})> span{ translate: 0 calc(${kms[i]} * -100%);}
+					`
+				}, '')
+				style.textContent = content
+			}
+
+			placeIt()
+			setInterval(placeIt, 1000)
+
+			animateIt()
+			setInterval(animateIt, 1000)
 		}
 	}
 
