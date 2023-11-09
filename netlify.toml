@@ -12,3 +12,12 @@
   
   [plugin.inputs]
     enable = false
+[[redirects]]
+  from = "/"
+  to = "/it"
+  status = 301
+  conditions = {Language = ["it"], Country = ["IT"]}
+[[redirects]]
+  from = "/"
+  to = "/en"
+  status = 301
