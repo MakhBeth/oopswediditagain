@@ -24,15 +24,6 @@ const lang = getLangFromUrl(Astro.url);
         safari_web_id: "web.onesignal.auto.528b6caf-1e6b-4608-b4e6-faa03f146a9c",
       });
     });
-    const subscribe = window.document.getElementById("subscribe")
-    subscribe.addEventListener("click", () => {
-      OneSignalDeferred.Notifications.requestPermission();
-    })
-    
-    OneSignalDeferred.Notifications.addEventListener("permissionChange", (p) => {
-        subscribe.textContent ? "Subscribed" : "Subscribed"
-    });
-
   </script>
 	<title>{title}</title>
 </head>
@@ -41,6 +32,16 @@ const lang = getLangFromUrl(Astro.url);
     <slot />
     <button id="subscribe">Subscribe</button>
   </div>
+  <script is:inline>
+    const subscribe = window.document.getElementById("subscribe")
+    subscribe.addEventListener("click", () => {
+      OneSignalDeferred.Notifications.requestPermission();
+    })
+    
+    OneSignalDeferred.Notifications.addEventListener("permissionChange", (p) => {
+        subscribe.textContent ? "Subscribed" : "Subscribed"
+    });
+  </script>
 </body>
 </html>
 
