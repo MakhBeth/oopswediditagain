@@ -43,7 +43,7 @@ const lang = getLangFromUrl(Astro.url);
 		}
 			checkElement();
 		}
-		waitForElementAndExecuteCode("subsribe", 20, (subscribe) => {
+		waitForElementAndExecuteCode("subscribe", 20, (subscribe) => {
 			console.log("Element found:", element);
 			const subscribe = window.document.getElementById("subscribe")
 			subscribe.addEventListener("click", () => {
