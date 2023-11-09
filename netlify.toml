@@ -14,7 +14,7 @@
     enable = false
 [[redirects]]
   from = "/oopswediditagain.com"
-  to = "/oopswediditagain/it"
+  to = "/oopswediditagain.com/it"
 
   status = 301
 
