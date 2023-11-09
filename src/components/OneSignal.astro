@@ -12,7 +12,7 @@ const lang = getLangFromUrl(Astro.url);
 	data-safari_web_id={safari_web_id}
 	lang={lang}
 >
-	<button>{lang === "en" ? "Subscribe" : "Notificami"}</button>
+	<button	aria-hidden="true">{lang === "en" ? "Subscribe" : "Notificami"}</button>
 </astro-onesignal>
 
 <style>
@@ -35,6 +35,9 @@ const lang = getLangFromUrl(Astro.url);
 		&[disabled] {
 			opacity: 0.5;
 		}
+		&[aria-hidden="true"] {
+			display: none;
+		}
 	}
 </style>
 
@@ -56,6 +59,7 @@ const lang = getLangFromUrl(Astro.url);
 				});
 				let granted = window?.Notification?.permission === "granted";
 				const subscribe = this.querySelector("button");
+				subscribe.ariaHidden = false;
 				subscribe.addEventListener("click", () => {
 					if(granted) return
 					OneSignal.Notifications.requestPermission();
