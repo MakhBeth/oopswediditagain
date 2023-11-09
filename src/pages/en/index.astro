@@ -1,8 +1,11 @@
 ---
 import Countdown from '../../components/Countdown.astro'
 import Page from '../../components/Page.astro';
+const lang = Astro.request.headers.get('accept-language')
+
 ---
 
+<div data-lang={lang}>a</div>
 <Page title="Hello world, again!">
 	<span slot="h1">about <Countdown />kilometers remaining</span>
 </Page>
