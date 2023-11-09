@@ -44,7 +44,7 @@ const lang = getLangFromUrl(Astro.url);
 			checkElement();
 		}
 		waitForElementAndExecuteCode("subscribe", 20, (subscribe) => {
-			console.log("Element found:", element);
+			console.log("Element found:", subscribe);
 			subscribe.addEventListener("click", () => {
 				OneSignalDeferred.Notifications.requestPermission();
 			})
