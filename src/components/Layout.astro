@@ -14,53 +14,73 @@ const lang = getLangFromUrl(Astro.url);
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <script is:inline src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script is:inline>
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(function(OneSignal) {
-      OneSignal.init({
-        appId: "58597594-372f-40e7-b23b-40c96abf1fee",
-        safari_web_id: "web.onesignal.auto.528b6caf-1e6b-4608-b4e6-faa03f146a9c",
-      });
-    });
-  </script>
+	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+	<script is:inline src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+	<script is:inline>
+		window.OneSignalDeferred = window.OneSignalDeferred || [];
+		OneSignalDeferred.push(function(OneSignal) {
+			OneSignal.init({
+				appId: "58597594-372f-40e7-b23b-40c96abf1fee",
+				safari_web_id: "web.onesignal.auto.528b6caf-1e6b-4608-b4e6-faa03f146a9c",
+			});
+		});
+
+		const waitForElementAndExecuteCode = (id, maxWaitTimeInSeconds, codeToExecute) => {
+			var intervalTime = 1000;
+			var elapsedTime = 0;
+			const checkElement = () => {
+				var element = document.getElementById(id);
+				if (element) {
+						codeToExecute(element);
+				} else {
+						elapsedTime += intervalTime;
+						if (elapsedTime < maxWaitTimeInSeconds * 1000) {
+								setTimeout(checkElement, intervalTime);
+						} else {
+								console.log("Element not found within the specified time limit");
+						}
+				}
+		}
+			checkElement();
+		}
+		waitForElementAndExecuteCode("subsribe", 20, (subscribe) => {
+			console.log("Element found:", element);
+			const subscribe = window.document.getElementById("subscribe")
+			subscribe.addEventListener("click", () => {
+				OneSignalDeferred.Notifications.requestPermission();
+			})
+			
+			OneSignalDeferred.Notifications.addEventListener("permissionChange", (p) => {
+					subscribe.textContent ? "Subscribed" : "Subscribed"
+			});
+		});
+	</script>
 	<title>{title}</title>
 </head>
 <body>
-  <div class="container">
-    <slot />
-    <button id="subscribe">Subscribe</button>
-  </div>
-  <script is:inline>
-    const subscribe = window.document.getElementById("subscribe")
-    subscribe.addEventListener("click", () => {
-      OneSignalDeferred.Notifications.requestPermission();
-    })
-    
-    OneSignalDeferred.Notifications.addEventListener("permissionChange", (p) => {
-        subscribe.textContent ? "Subscribed" : "Subscribed"
-    });
-  </script>
+	<div class="container">
+		<slot />
+		<button id="subscribe">Subscribe</button>
+	</div>
 </body>
 </html>
 
 <style>
-    * {
-      all: initial;
-      box-sizing: border-box;
-    }
+		* {
+			all: initial;
+			box-sizing: border-box;
+		}
 
-    html, body, .container {
-      height: 100%;
-      background-color: #9cd8d6;
-      font-size: 16px;
-    }
+		html, body, .container {
+			height: 100%;
+			background-color: #9cd8d6;
+			font-size: 16px;
+		}
 
-    .container {
-      display: block;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+		.container {
+			display: block;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 </style>
