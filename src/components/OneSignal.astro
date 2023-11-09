@@ -1,0 +1,78 @@
+---
+import { getLangFromUrl } from "../i18n/utils"
+const isDev = import.meta.env.MODE === "development"
+const appId = isDev ? "a24cfac6-181d-4af0-8f94-ad4493b2ee4c" : "58597594-372f-40e7-b23b-40c96abf1fee"
+const safari_web_id = isDev ? "web.onesignal.auto.276b1587-9df2-49f1-886b-c818bd2e0d3c" : "web.onesignal.auto.528b6caf-1e6b-4608-b4e6-faa03f146a9c"
+const lang = getLangFromUrl(Astro.url);
+---
+
+<astro-onesignal 
+	data-env={import.meta.env.MODE} 
+	data-appId={appId}
+	data-safari_web_id={safari_web_id}
+	lang={lang}
+>
+	<button>{lang === "en" ? "Subscribe" : "Notificami"}</button>
+</astro-onesignal>
+
+<style>
+	button {
+		all: unset;
+		font-family: "Wellfleet", cursive;
+		cursor: pointer;
+		display: inline-block;
+		margin: 0 auto;
+		text-align: center;
+		color: #9cd8d6;
+		background-color: white;
+		padding: 0.5em 1em;
+		font-size: 1.2rem;
+
+		&:hover, &:focus-visible {
+			box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+		}
+
+		&[disabled] {
+			opacity: 0.5;
+		}
+	}
+</style>
+
+<script is:inline src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script is:inline>
+	class Onesignal extends HTMLElement {
+		constructor() {
+			super();
+			const { lang, env, safari_web_id, appid: appId } = this.dataset;
+			const subscribeText = lang === "en" ? "Subscribe" : "Notificami"
+			const subscribedText = lang === "en" ? "Subscribed" : "Notificherò"
+			const isDev = env === "development"
+			window.OneSignalDeferred = window.OneSignalDeferred || [];
+			OneSignalDeferred.push((OneSignal) => {
+				OneSignal.init({
+					appId,
+					safari_web_id,
+					allowLocalhostAsSecureOrigin: isDev,
+				});
+				let granted = window?.Notification?.permission === "granted";
+				const subscribe = this.querySelector("button");
+				subscribe.addEventListener("click", () => {
+					if(granted) return
+					OneSignal.Notifications.requestPermission();
+				})
+				subscribe.disabled = granted
+				if(granted) {
+					subscribe.textContent = subscribedText
+				}
+				OneSignal.User.PushSubscription.addEventListener("change", ({ current }) => {
+					subscribe.textContent = current.optedIn ? subscribedText : subscribeText
+					granted = current.optedIn
+					subscribe.disabled = granted
+				});
+			});
+		}
+	}
+
+	// Tell the browser to use our AstroHeart class for <astro-heart> elements.
+	customElements.define('astro-onesignal', Onesignal);
+</script>

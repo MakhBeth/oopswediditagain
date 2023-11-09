@@ -8,6 +8,6 @@ export const defaultLang = 'en';
 export const ui = {
   en: {
   },
-  fr: {
+  it: {
   },
 } as const;

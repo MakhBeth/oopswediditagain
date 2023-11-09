@@ -15,52 +15,11 @@ const lang = getLangFromUrl(Astro.url);
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
-	<script is:inline src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-	<script is:inline>
-		window.OneSignalDeferred = window.OneSignalDeferred || [];
-		OneSignalDeferred.push(function(OneSignal) {
-			OneSignal.init({
-				appId: "58597594-372f-40e7-b23b-40c96abf1fee",
-				safari_web_id: "web.onesignal.auto.528b6caf-1e6b-4608-b4e6-faa03f146a9c",
-			});
-			const waitForElementAndExecuteCode = (id, maxWaitTimeInSeconds, codeToExecute) => {
-				var intervalTime = 1000;
-				var elapsedTime = 0;
-				const checkElement = () => {
-					var element = document.getElementById(id);
-					if (element) {
-							codeToExecute(element);
-					} else {
-							elapsedTime += intervalTime;
-							if (elapsedTime < maxWaitTimeInSeconds * 1000) {
-									setTimeout(checkElement, intervalTime);
-							} else {
-									console.log("Element not found within the specified time limit");
-							}
-					}
-			}
-				checkElement();
-			}
-			waitForElementAndExecuteCode("subscribe", 20, (subscribe) => {
-				console.log("Element found:", subscribe);
-				subscribe.addEventListener("click", () => {
-					console.log("PIPPO")
-					OneSignal.Notifications.requestPermission();
-				})
-				
-				OneSignal.Notifications.addEventListener("permissionChange", (p) => {
-					console.log(p)
-					subscribe.textContent = p ? "Subscribed" : "Subscribe"
-				});
-			});
-		});
-	</script>
 	<title>{title}</title>
 </head>
 <body>
 	<div class="container">
 		<slot />
-		<button id="subscribe">Subscribe</button>
 	</div>
 </body>
 </html>
@@ -75,6 +34,7 @@ const lang = getLangFromUrl(Astro.url);
 			height: 100%;
 			background-color: #9cd8d6;
 			font-size: 16px;
+			text-align: center;
 		}
 
 		.container {
