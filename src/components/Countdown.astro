@@ -1,5 +1,4 @@
 ---
-const { time = '8 Jun 2024' } = Astro.props;
 const numbers = Array.from({length: 11}).map((_, i) => {
 	const l = i.toString()
 	return l.charAt(l.length - 1);
@@ -35,13 +34,13 @@ function isValidUnitNumber(str) {
 	}
 </style>
 
-<astro-countdown data-time={time}>
+<astro-countdown>
 	<style is:inline />
 	<span aria-hidden="true">
 		{
 			Array.from((111_111.11)
 				.toLocaleString("it-IT", {
-					minimumFractionDigits: 2, 
+					minimumFractionDigits: 2,  
 					maximumFractionDigits: 2
 			})).map((s, i, a) => {
 				if(isValidUnitNumber(s)) return <span data-unit>
@@ -54,33 +53,23 @@ function isValidUnitNumber(str) {
 	<span aria-hidden="false" />
 </astro-countdown>
 
-<script is:inline>
+<script>
+	import { subscribe } from 'valtio'
+	import { countdown } from '../utils/countdown'
 	class Countdown extends HTMLElement {
 		constructor() {
 			super();
-			const { time } = this.dataset
 			const style = this.querySelector("style")
-			const storkKmPerDay = 300
-			const secondsInADay = 60 * 60 * 24
-			const storkKMPerSec = storkKmPerDay / secondsInADay
-			const countTo = new Date(time).getTime()
-			const calculateKms = () => {
-				const now = new Date().getTime()
-				const timeDifference = countTo - now
-				const seconds = Math.ceil(timeDifference / 1000);
-				const totalKMs = seconds * storkKMPerSec
+			
 
-				return totalKMs
-			}
-
-			const placeIt = () => {
+			const placeIt = (kms: number) => {
         const countSpan = this.querySelector('span[aria-hidden="false"]');
-        countSpan.textContent = calculateKms().toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+        countSpan.textContent = kms.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
 			}
 
-			const animateIt = () => {
+			const animateIt = (kilometers: number) => {
 				const spans = Array.from(this.querySelectorAll("span[data-unit]")).reverse()
-				const kms = Array.from(Math.floor(calculateKms() * 100).toString()).reverse()
+				const kms = Array.from(Math.floor(kilometers * 100).toString()).reverse()
 				const content = spans.reduce((aggr, _, i) => {
 					if(!kms[i]) return `${aggr}
 						span[data-unit]:nth-of-type(${spans.length - i}){ display: none;}
@@ -92,11 +81,12 @@ function isValidUnitNumber(str) {
 				style.textContent = content
 			}
 
-			placeIt()
-			setInterval(placeIt, 1000)
-
-			animateIt()
-			setInterval(animateIt, 1000)
+			placeIt(countdown.kms)
+			animateIt(countdown.kms)
+			subscribe(countdown, () => {
+				placeIt(countdown.kms)
+				animateIt(countdown.kms)
+			})
 		}
 	}
 

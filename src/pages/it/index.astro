@@ -4,8 +4,24 @@ import Page from '../../components/Page.astro';
 import OneSignal from '../../components/OneSignal.astro';
 ---
 
-<Page title="Hello world, again!">
-	<span slot="h1">mancano <Countdown />kilometri circa</span>
+<Page title="Ciao Mondo, di nuovo!">
+	<span slot="h1" id="missing">mancano <Countdown />kilometri circa</span>
+	<span slot="h1" id="delivering" style="display: none">In consegna!</span>
 	<OneSignal />
 </Page>
+
+<script>
+	import { countdown } from "../../utils/countdown";
+	import { subscribe } from "valtio";
+	const missing = window.document.getElementById("missing");
+	const delivering = window.document.getElementById("delivering");
+	const deliveryyyyy = () => {
+		if(countdown.kms <= 0) {
+			missing.style.display = "none";
+			delivering.style.display = "block";
+		}
+	}
+	if(countdown.kms <= 0) deliveryyyyy()
+	else subscribe(countdown, deliveryyyyy)
+</script>
 
