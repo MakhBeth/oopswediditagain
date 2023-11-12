@@ -4,12 +4,16 @@ import '@fontsource/twinkle-star';
 import Layout, { Props } from '../components/Layout.astro';
 
 const { title } = Astro.props as Props;
-
+const born = {
+	day: undefined,
+	height: undefined,
+	weigth: undefined
+}
 ---
 
 <Layout title={title}>
 	<main>
-		<h1><slot name="h1" /></h1>
+		{!born.day ? <h1><slot name="h1" /></h1> : <h1><slot name="born" /></h1>}
     <slot />
 	</main>
 </Layout>

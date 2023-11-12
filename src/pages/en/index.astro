@@ -7,21 +7,20 @@ import Page from '../../components/Page.astro';
 <Page title="Hello world, again!">
 	<span slot="h1" id="missing">about <Countdown />kilometers remaining</span>
 	<span slot="h1" id="delivering" style="display: none">Delivering!</span>
+	<span slot="born">Delivered!</span>
 	<OneSignal />
 </Page>
 
 <script>
 	import { countdown } from "../../utils/countdown";
-	import { subscribe } from "valtio";
 	const missing = window.document.getElementById("missing");
 	const delivering = window.document.getElementById("delivering");
-	const deliveryyyyy = () => {
-		if(countdown.kms <= 0) {
+	const deliveryyyyy = (kms: number) => {
+		if(kms <= 0) {
 			missing.style.display = "none";
 			delivering.style.display = "block";
 		}
 	}
-	if(countdown.kms <= 0) deliveryyyyy()
-	else subscribe(countdown, deliveryyyyy)
+	countdown.onChange(deliveryyyyy)
 </script>
 

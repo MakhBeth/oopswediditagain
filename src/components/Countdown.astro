@@ -3,9 +3,7 @@ const numbers = Array.from({length: 11}).map((_, i) => {
 	const l = i.toString()
 	return l.charAt(l.length - 1);
 })
-function isValidUnitNumber(str) {
-  return /^[0-9]+$/.test(str);
-}
+const isValidUnitNumber = (str: string) => /^[0-9]+$/.test(str);
 ---
 
 <style>
@@ -27,11 +25,11 @@ function isValidUnitNumber(str) {
 		overflow: hidden;
 		height: calc(1em + 2px);
 		pointer-events: none;
-
-		> span {
-			transition: translate 300ms
-		};
 	}
+
+	span[data-unit] span {
+		transition: translate 300ms
+	};
 </style>
 
 <astro-countdown>
@@ -54,7 +52,6 @@ function isValidUnitNumber(str) {
 </astro-countdown>
 
 <script>
-	import { subscribe } from 'valtio'
 	import { countdown } from '../utils/countdown'
 	class Countdown extends HTMLElement {
 		constructor() {
@@ -80,12 +77,9 @@ function isValidUnitNumber(str) {
 				}, '')
 				style.textContent = content
 			}
-
-			placeIt(countdown.kms)
-			animateIt(countdown.kms)
-			subscribe(countdown, () => {
-				placeIt(countdown.kms)
-				animateIt(countdown.kms)
+			countdown.onChange((kms) => {
+				placeIt(kms)
+				animateIt(kms)
 			})
 		}
 	}

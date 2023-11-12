@@ -1,4 +1,3 @@
-import { proxy } from "valtio"
 
 const time = "8 Jun 2024"
 
@@ -18,7 +17,26 @@ const calculateKms = () => {
 
 const kms = calculateKms();
 
-export const countdown = proxy({ kms })
+const handlers = []
+
+const obj = {
+  kms,
+  onChange: v => {
+    v(kms)
+    handlers.push(v)
+  },
+  handlers: []
+} 
+
+export const countdown = new Proxy(obj, {
+  set(target, prop, value) {
+    if(prop === "kms") {
+      handlers.forEach(v => v(value))
+      return Reflect.set(target, prop, value);
+    }
+    return false
+  }
+})
 
 const update = () => {
   countdown.kms = calculateKms()

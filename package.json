@@ -16,7 +16,6 @@
     "@fontsource/butterfly-kids": "^5.0.17",
     "@fontsource/twinkle-star": "^5.0.17",
     "@fontsource/wellfleet": "^5.0.17",
-    "cypress": "^10.0.3",
-    "valtio": "^1.12.0"
+    "cypress": "^10.0.3"
   }
 }
