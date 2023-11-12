@@ -2,6 +2,8 @@
 import '@fontsource/wellfleet';
 import '@fontsource/twinkle-star';
 import Layout, { Props } from '../components/Layout.astro';
+import Flying from '../components/Flying.astro';
+import Cloud from '../components/Cloud.astro';
 
 const { title } = Astro.props as Props;
 const born = {
@@ -13,6 +15,10 @@ const born = {
 
 <Layout title={title}>
 	<main>
+		<div class="illustration">
+			<Cloud />
+			<Flying />
+		</div>
 		{!born.day ? <h1><slot name="h1" /></h1> : <h1><slot name="born" /></h1>}
     <slot />
 	</main>
@@ -21,12 +27,21 @@ const born = {
 <style>
 	h1 {
 		font-family: "Twinkle Star", cursive;
-		color: white;
-		text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+		color: var(--secondary);
 		text-align: center;
 		padding: 0.5em;
 		text-wrap: balance;
 		font-size: 2.4rem;
+	}
+
+	main {
+    display: grid;
+    grid-template-rows: repeat(3, max-content);
+	}
+
+	.illustration {
+		position: relative;
+		padding: 0 5vw;
 	}
 </style>
 
