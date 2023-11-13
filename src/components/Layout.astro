@@ -2,9 +2,10 @@
 import { getLangFromUrl } from '../i18n/utils';
 export interface Props {
 	title: string;
+	content: string;
 }
 
-const { title } = Astro.props as Props;
+const { title, content } = Astro.props as Props;
 
 const lang = getLangFromUrl(Astro.url);
 ---
@@ -16,6 +17,24 @@ const lang = getLangFromUrl(Astro.url);
 	<meta name="viewport" content="width=device-width">
 	<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	<title>{title}</title>
+	<meta name="robots" content="index,follow">
+	<meta name="googlebot" content="index,follow">
+	<meta name="description" content={content}>
+	<meta name="twitter:creator" content="@makhbeth">
+	<meta property="og:url" content="https://oopswediditagain.com/">
+	<meta property="og:title" content={title}>
+	<meta property="og:description" content={content}>
+	<meta property="og:image" content="/preview.jpg">
+	<meta property="og:site_name" content="Oops We did it agani">
+	<link rel="canonical" href="https://oopswediditagain.com/">
+	<meta name="apple-mobile-web-app-title" content="We did it again">
+	<meta name="application-name" content="We did it again">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
 </head>
 <body>
 	<div class="container">

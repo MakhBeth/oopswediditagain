@@ -5,7 +5,7 @@ import Layout, { Props } from '../components/Layout.astro';
 import Flying from '../components/Flying.astro';
 import Cloud from '../components/Cloud.astro';
 
-const { title } = Astro.props as Props;
+const { title, content } = Astro.props as Props;
 const born = {
 	day: undefined,
 	height: undefined,
@@ -13,7 +13,7 @@ const born = {
 }
 ---
 
-<Layout title={title}>
+<Layout title={title} content={content}>
 	<main>
 		<div class="illustration">
 			<Cloud />
