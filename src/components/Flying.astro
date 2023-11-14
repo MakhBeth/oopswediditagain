@@ -79,9 +79,10 @@
 </div>
 
 <style lang="scss">
+  @use 'sass:math';
   $time: 1200ms;
   $number-of-frames: 7;
-  $frame-duration: $time / $number-of-frames;
+  $frame-duration: math.div($time, $number-of-frames);
 
   @keyframes package {
     0% {
@@ -110,10 +111,10 @@
     }
   }
   @keyframes sprite {
-    0%, #{100% / $number-of-frames} {
+    0%, #{math.div(100%, $number-of-frames)} {
       opacity: 1;
     }
-    #{100% / $number-of-frames + 0.1} {
+    #{math.div(100%, $number-of-frames) + 2} {
       opacity: 0;
     }
   }
@@ -133,8 +134,8 @@
     transform-origin: 89% 40%;
   }
   .heart {
-    animation: bump $time / 2 cubic-bezier(0.680, -0.550, 0.265, 1.550) infinite;
-    transform-origin: 90% 65%;
+    animation: bump math.div($time, 2) cubic-bezier(0.680, -0.550, 0.265, 1.550) infinite;
+    transform-origin: 90% 65%; 
   }
   .leg1, .leg2 {    
     animation: leg $time * 3 infinite ease-in-out;
