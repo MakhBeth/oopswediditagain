@@ -2,7 +2,7 @@
     "display": "standalone",
     "start_url": "/",
     "name": "We did it again",
-    "short_name": "OS Manifest",
+    "short_name": "We did it again",
     "icons": [
         {
             "src": "/icon-192x192.png",
