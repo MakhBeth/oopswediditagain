@@ -13,9 +13,38 @@ const lang = getLangFromUrl(Astro.url);
 	lang={lang}
 >
 	<button	aria-hidden="true">{lang === "en" ? "Subscribe" : "Notificami"}</button>
+
+	<dialog>
+		<p>
+			{lang === 'it' && "Purtroppo o per fortuna sembra che tu abbia un iPhone/iPad. Se proprio vuoi le notifiche su questo dispositivo, devi prima cliccare sull'icona"}
+			{lang === 'en' && 'Unfortunately or fortunately, it seems that you have an iPhone/iPad. If you really want notifications on this device, you must first click on the'}
+			<img src="/iosadd.png" alt={lang==="it" ? "Opzioni" : "Options"} />
+			{lang === 'it' && 'e aggiungere questo sito alla tua schermata Home. Poi puoi aprirlo dalla Home del tuo device e finalmente ricliccare su Notificami e abilitarle. Sembra quasi che Apple faccia di tutto per rendere questo processo tedioso. Però poi potrai felicemente ricevere una o forse due notifiche!'}
+			{lang === 'en' && "and add this site to your Home screen. Then, you can open it from your device's Home screen and finally click on 'Notify Me' to enable notifications. It almost seems like Apple does everything to make this process tedious. However, afterwards, you can happily receive one or maybe two notifications!"}
+		</p>
+		<p>{lang === 'it' && 'Se non hai un dispositivo iOS e vedi questo messaggio, abbiamo un problema!'}</p>
+		<p>{lang === 'en' && "If you don't have an iOS device and you see this message, we have a problem!"}</p>
+		<form method="dialog">
+			<button>OK</button>
+		</form>
+	</dialog>
 </astro-onesignal>
 
 <style>
+	dialog {
+		font-family: "Wellfleet", cursive;
+		width: 600px;
+		color: var(--secondary);
+		border: 1px solid var(--primary);
+		border-radius: 1em;
+		font-size: 1rem;
+	}
+
+	img {
+		max-width: 1em;
+		transform: translateY(10%);
+	}
+
 	button {
 		all: unset;
 		font-family: "Wellfleet", cursive;
@@ -43,6 +72,12 @@ const lang = getLangFromUrl(Astro.url);
 
 <script is:inline src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script is:inline>
+	const isIos = () => {
+		const userAgent = window.navigator.userAgent.toLowerCase();
+		return /iphone|ipad|ipod/.test( userAgent );
+	}
+	const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
 	class Onesignal extends HTMLElement {
 		constructor() {
 			super();
@@ -50,30 +85,41 @@ const lang = getLangFromUrl(Astro.url);
 			const subscribeText = lang === "en" ? "Subscribe" : "Notificami"
 			const subscribedText = lang === "en" ? "Subscribed" : "Notificherò"
 			const isDev = env === "development"
-			window.OneSignalDeferred = window.OneSignalDeferred || [];
-			OneSignalDeferred.push((OneSignal) => {
-				OneSignal.init({
-					appId,
-					safari_web_id,
-					allowLocalhostAsSecureOrigin: isDev,
-				});
-				let granted = window?.Notification?.permission === "granted";
+
+			if (isIos() && !isInStandaloneMode()) {
 				const subscribe = this.querySelector("button");
 				subscribe.ariaHidden = false;
+				const dialog = this.querySelector("dialog");
+
 				subscribe.addEventListener("click", () => {
-					if(granted) return
-					OneSignal.Notifications.requestPermission();
+					dialog.showModal();
 				})
-				subscribe.disabled = granted
-				if(granted) {
-					subscribe.textContent = subscribedText
-				}
-				OneSignal.User.PushSubscription.addEventListener("change", ({ current }) => {
-					subscribe.textContent = current.optedIn ? subscribedText : subscribeText
-					granted = current.optedIn
+			} else {
+				window.OneSignalDeferred = window.OneSignalDeferred || [];
+				OneSignalDeferred.push((OneSignal) => {
+					OneSignal.init({
+						appId,
+						safari_web_id,
+						allowLocalhostAsSecureOrigin: isDev,
+					});
+					let granted = window?.Notification?.permission === "granted";
+					const subscribe = this.querySelector("button");
+					subscribe.ariaHidden = false;
+					subscribe.addEventListener("click", () => {
+						if(granted) return
+						OneSignal.Notifications.requestPermission();
+					})
 					subscribe.disabled = granted
+					if(granted) {
+						subscribe.textContent = subscribedText
+					}
+					OneSignal.User.PushSubscription.addEventListener("change", ({ current }) => {
+						subscribe.textContent = current.optedIn ? subscribedText : subscribeText
+						granted = current.optedIn
+						subscribe.disabled = granted
+					});
 				});
-			});
+			}
 		}
 	}
 
