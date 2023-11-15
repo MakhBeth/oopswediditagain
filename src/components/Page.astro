@@ -4,6 +4,8 @@ import '@fontsource/twinkle-star';
 import Layout, { Props } from '../components/Layout.astro';
 import Flying from '../components/Flying.astro';
 import Cloud from '../components/Cloud.astro';
+import Cloudette from "./Cloudette.astro"
+import Star from "./Star.astro"
 
 const { title, content } = Astro.props as Props;
 const born = {
@@ -16,7 +18,18 @@ const born = {
 <Layout title={title} content={content}>
 	<main>
 		<div class="illustration">
+			<Cloudette className="cloud minions stroke two" />
+			<Cloudette className="cloud minions fill one" />
+			<Star className="star minions fill one" />
+			<Star className="star minions stroke two" />
+			<Star className="star minions fill three" />
 			<Cloud />
+			<Star className="star minions stroke four" />
+			<Star className="star minions fill five" />
+			<Star className="star minions stroke six" />
+			<Cloudette className="cloud minions stroke four" />
+			<Cloudette className="cloud minions fill three" />
+			<Cloudette className="cloud minions fill five" />
 			<Flying />
 		</div>
 		{!born.day ? <h1><slot name="h1" /></h1> : <h1><slot name="born" /></h1>}
@@ -25,6 +38,11 @@ const born = {
 </Layout>
 
 <style>
+	@keyframes rotate {
+		100%{
+			transform: rotate(360deg);
+		}
+	}
 	h1 {
 		font-family: "Twinkle Star", cursive;
 		color: var(--secondary);
@@ -44,6 +62,106 @@ const born = {
 		position: relative;
 		padding: 0 5vw;
 		max-width: 100%;
+	}
+
+	/* calc((100vw - 100%) / 2 + 100%) */
+	.minions {
+		position: absolute;
+		--dimension: clamp(calc(var(--size) * 0.5em), calc(var(--size) * 2vw) ,calc(var(--size) * 1em));
+		width: var(--dimension);
+		height: var(--dimension);
+		left: calc(100vw - 100%);
+		filter: drop-shadow(1px 1px 0px var(--primary));
+	}
+
+
+	.star {
+		--size: 2.5;
+		--timing: 20s;
+		--direction: normal;
+		animation: rotate var(--timing) linear infinite var(--direction);
+	}
+
+	.cloud {
+		--size: 10;
+		height: calc(var(--size) / 2);
+	}
+
+	.star.one {
+		--size: 1.5;
+		top: 0;
+		left: 19%;
+	}
+
+	.star.two {
+		--size: 2.5;
+		--timing: 42s;
+		--direction: alternate;
+		top: -10%;
+		left: 14%;
+	}
+
+	.star.three {
+		--size: 2.5;
+		--timing: 52s;
+		--direction: reverse;
+		top: 30%;
+		left: 98%;
+	}
+	.star.six {
+		--size: 2;
+		--timing: 52s;
+		--direction: reverse;
+		top: 36%;
+		left: 105%;
+	}
+
+	.star.four {
+		--size: 1.5;
+		left: 60%;
+		top: 0%;
+	}
+
+	.star.five {
+		--size: 2;
+    left: 65%;
+    top: -5%;
+	}
+
+	.cloud.one {
+    left: 94%;
+    bottom: 5%;
+	}
+	.cloud.two {
+		--size: 8;
+    left: 89%;
+    bottom: 5%;
+	}
+
+	.cloud.three {
+    --size: 8;
+    left: -24%;
+    bottom: 25%;
+	}
+	.cloud.four {
+		--size: 7;
+    left: -10%;
+    bottom: 35%;
+	}
+
+	.cloud.five {
+    left: 65%;
+		top: -1%;
+	}
+
+	.fill {
+		fill: var(--bcg);
+	}
+
+	.stroke {
+		stroke-width: 3px;
+		stroke: var(--bcg);
+		fill: transparent;
 	}
 </style>
 
