@@ -14,22 +14,47 @@ const born = {
 	weigth: undefined
 }
 ---
-
 <Layout title={title} content={content}>
 	<main>
 		<div class="illustration">
-			<Cloudette className="cloud minions stroke two" />
-			<Cloudette className="cloud minions fill one" />
-			<Star className="star minions fill one" />
-			<Star className="star minions stroke two" />
-			<Star className="star minions fill three" />
-			<Cloud />
-			<Star className="star minions stroke four" />
-			<Star className="star minions fill five" />
-			<Star className="star minions stroke six" />
-			<Cloudette className="cloud minions stroke four" />
-			<Cloudette className="cloud minions fill three" />
-			<Cloudette className="cloud minions fill five" />
+			<div id="scene">
+				<div data-depth="1">
+					<Cloud />
+				</div>
+				<div data-depth="3">
+					<Cloudette className="cloud minions stroke two" />
+				</div>
+				<div data-depth="2">
+					<Cloudette className="cloud minions fill one" />
+				</div>
+				<div data-depth="4">
+					<Star className="star minions fill one" />
+				</div>
+				<div data-depth="1.5">
+					<Star className="star minions stroke two" />
+				</div>
+				<div data-depth="5">
+					<Star className="star minions fill three" />
+				</div>
+				<div data-depth="3">
+					<Star className="star minions stroke four" />
+				</div>
+				<div data-depth="2">
+					<Star className="star minions fill five" />
+				</div>
+				<div data-depth="5">
+					<Star className="star minions stroke six" />
+				</div>
+				<div data-depth="2">
+					<Cloudette className="cloud minions stroke four" />
+				</div>
+				<div data-depth="3">
+					<Cloudette className="cloud minions fill three" />
+				</div>
+				<div data-depth="3">
+					<Cloudette className="cloud minions fill five" />
+				</div>
+			</div>
 			<Flying />
 		</div>
 		{!born.day ? <h1><slot name="h1" /></h1> : <h1><slot name="born" /></h1>}
@@ -41,6 +66,11 @@ const born = {
 	@keyframes rotate {
 		100%{
 			transform: rotate(360deg);
+		}
+	}
+	@keyframes float {
+		100%{
+			transform: translateX(-10%);
 		}
 	}
 	h1 {
@@ -84,6 +114,10 @@ const born = {
 
 	.cloud {
 		--size: 10;
+		--timing: 10s;
+		--direction: alternate;
+		animation: float var(--timing) linear infinite var(--direction);
+		animation-timing-function: ease-in-out;
 		height: calc(var(--size) / 2);
 	}
 
@@ -131,6 +165,7 @@ const born = {
 	.cloud.one {
     left: 94%;
     bottom: 5%;
+		--direction: alternate-reverse;
 	}
 	.cloud.two {
 		--size: 8;
@@ -142,6 +177,7 @@ const born = {
     --size: 8;
     left: -24%;
     bottom: 25%;
+		--timing: 20s;
 	}
 	.cloud.four {
 		--size: 7;
@@ -152,6 +188,7 @@ const born = {
 	.cloud.five {
     left: 65%;
 		top: -1%;
+		--timing: 4s;
 	}
 
 	.fill {
@@ -163,5 +200,17 @@ const born = {
 		stroke: var(--bcg);
 		fill: transparent;
 	}
+
+	#scene, #scene div {
+		position: absolute !important;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+	}
 </style>
 
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/parallax/3.1.0/parallax.min.js" />
+<script is:inline defer>
+	const scene = document.getElementById('scene');
+	const parallaxInstance = new Parallax(scene);
+</script>

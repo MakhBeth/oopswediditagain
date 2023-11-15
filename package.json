@@ -17,6 +17,7 @@
     "@fontsource/twinkle-star": "^5.0.17",
     "@fontsource/wellfleet": "^5.0.17",
     "cypress": "^10.0.3",
+    "parallax-js": "^3.1.0",
     "sass": "^1.69.5"
   }
 }
