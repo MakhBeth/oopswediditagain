@@ -41,11 +41,21 @@ const lang = getLangFromUrl(Astro.url);
 	<div class="container">
 		<slot />
 	</div>
+	<a
+		href="https://github.com/MakhBeth/opswediditagain"
+		target="_blank"
+		rel="noopener"
+		class="github"
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+			<path class="" d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+		</svg>
+	</a>
 </body>
 </html>
 
 <style>
-		* {
+		*:not(path) {
 			all: initial;
 			box-sizing: border-box;
 		}
@@ -57,6 +67,7 @@ const lang = getLangFromUrl(Astro.url);
 			font-size: 16px;
 			text-align: center;
 			background: radial-gradient(at 50% 30%,transparent,#ceecea91);
+			font-family: "Wellfleet", cursive;
 		}
 
 		.container {
@@ -66,5 +77,70 @@ const lang = getLangFromUrl(Astro.url);
 			align-items: center;
 			text-align: center;
 			overflow: hidden;
+		}
+		:global(button), :global(.button) {
+			all: unset;
+			font-family: "Wellfleet", cursive;
+			cursor: pointer;
+			display: inline-block;
+			text-align: center;
+			color: var(--secondary);
+			background-color: white;
+			padding: 0.5em 1em;
+			font-size: 1.2rem;
+			box-shadow: 0px 0px 1px var(--primary);
+
+
+			&:not([disabled]):is(&:hover, &:focus-visible) {
+				filter: drop-shadow(2px 2px 0px var(--primary));
+			}
+
+			&[disabled] {
+				opacity: 0.5;
+			}
+			&[aria-hidden="true"] {
+				display: none;
+			}
+
+			&:active {
+				transform: scale(0.95);
+			}
+		}
+		:global(.buttons) {
+			display: flex;
+			gap: 1em;
+			justify-content: center;
+			padding: 1em;
+			margin-bottom: 0.5em;
+		}
+
+		:global(a) {
+			font-family: "Wellfleet", cursive;
+			color: var(--secondary);
+			font-size: 0.8em;
+			width: max-content;
+			justify-self: center;
+
+			&:focus-visible {
+				outline-color: var(--secondary);
+				outline-offset: 0.5em;
+			}
+		}
+		.github {
+			clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+			display: inline-block;
+			background-color: white;
+			position: fixed;
+			bottom: 0;
+			right: 0;
+			padding: 3rem 0.5rem 0.5rem 3rem;
+			color: var(--secondary);
+			will-change: background-color;
+			transition: background-color 300ms;
+			cursor: pointer;
+
+			&:hover {
+				background-color: var(--primary);
+			}
 		}
 </style>

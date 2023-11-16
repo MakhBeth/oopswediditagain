@@ -102,7 +102,7 @@
   }
   @keyframes bump {
     50% {
-      transform: scale(1.1);
+      transform: scale(0.9);
     }
   }
   @keyframes leg {
@@ -128,7 +128,7 @@
   }
 
   svg {
-		filter: drop-shadow(2px 6px 0px var(--primary));
+		filter: drop-shadow(clamp(1px, 0.1vw, 2px) clamp(3px, 0.3vw, 6px) 0px var(--primary));
   }
   .wings4 {
     transform: translateX(-1%) translateY(8%)
@@ -156,6 +156,7 @@
 
   div {
     animation: bump $time * 15 ease-in-out infinite;
+    max-width: calc(100% - 2em);
   }
 
   @media screen and (prefers-reduced-motion) {
