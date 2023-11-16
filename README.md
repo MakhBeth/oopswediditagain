@@ -1,4 +1,4 @@
-[![oopswediditagain.com](https://oopswediditagain.com)](https://ntl.fyi/3LZGn73)
+[oopswediditagain.com](https://oopswediditagain.com)
 
 Another ~side~ main project 
 
