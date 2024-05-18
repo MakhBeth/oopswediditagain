@@ -6,13 +6,9 @@ import Flying from '../components/Flying.astro';
 import Cloud from '../components/Cloud.astro';
 import Cloudette from "./Cloudette.astro"
 import Star from "./Star.astro"
+import { born } from "../constants"
 
 const { title, content } = Astro.props as Props;
-const born = {
-	day: undefined,
-	height: undefined,
-	weigth: undefined
-}
 ---
 <Layout title={title} content={content}>
 	<main>
@@ -55,9 +51,8 @@ const born = {
 					<Cloudette className="cloud minions fill five" />
 				</div>
 			</div>
-			<Flying />
+			<Flying born={!!born.day} />
 		</div>
-		{!born.day ? <h1><slot name="h1" /></h1> : <h1><slot name="born" /></h1>}
     <slot />
 	</main>
 </Layout>
@@ -72,14 +67,6 @@ const born = {
 		100%{
 			transform: translateX(-10%);
 		}
-	}
-	h1 {
-		font-family: "Twinkle Star", cursive;
-		color: var(--secondary);
-		text-align: center;
-		padding: 0.5em;
-		text-wrap: balance;
-		font-size: 2.4rem;
 	}
 
 	main {

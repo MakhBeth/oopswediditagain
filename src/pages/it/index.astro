@@ -2,38 +2,18 @@
 import Countdown from '../../components/Countdown.astro'
 import Page from '../../components/Page.astro';
 import OneSignal from '../../components/OneSignal.astro';
+import Content from '../../components/Content.astro'
 ---
 
 <Page title="Ciao Mondo, di nuovo!" content="I miei genitori hanno messo su 'sta roba. Dategli un occhio, fateli felici">
-	<span slot="h1" id="missing">mancano <Countdown />kilometri circa</span>
-	<span slot="h1" id="delivering" style="display: none">In consegna!</span>
-	<span slot="born">Consegnat*!</span>
-	<div class="buttons">
-		<OneSignal /> 
-		<a 
-			class="button" 
-			href="https://www.amazon.it/baby-reg/davide-dipumpo-giugno-2024-milano/1SYN7DGSB0SVY?ref_=cm_sw_r_apann_dp_0EQ6RYP3GCAR1B2BD8EW&language=en_US" target="_blank" rel="noref nofollow"
-		>
-			Lista nascita
-		</a>
-	</div>
-	<a 
-		href="https://piccologuaioaportaromana.com" target="_blank" rel="noref nofollow"
+	<Content
+		delivered="Consegnat*!"
+		delivering="In consegna!"
+		registry="Lista nascita"
+		website="Il sito di Gaia"
 	>
-		Il sito di Gaia!
-	</a>
+		mancano <Countdown />kilometri circa
+	</Content>
 </Page>
 
-<script>
-	import { countdown } from "../../utils/countdown";
-	const missing = window.document.getElementById("missing");
-	const delivering = window.document.getElementById("delivering");
-	const deliveryyyyy = (kms: number) => {
-		if(kms <= 0) {
-			missing.style.display = "none";
-			delivering.style.display = "block";
-		}
-	}
-	countdown.onChange(deliveryyyyy)
-</script>
 

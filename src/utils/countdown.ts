@@ -1,5 +1,4 @@
-
-const time = "8 Jun 2024"
+import { time } from "../constants"
 
 const storkKmPerDay = 300
 const secondsInADay = 60 * 60 * 24
