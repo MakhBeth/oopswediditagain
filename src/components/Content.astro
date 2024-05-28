@@ -1,11 +1,11 @@
 ---
 import OneSignal from './OneSignal.astro'
 import { born } from '../constants'
-import { render } from 'mustache'
+import Mustache from 'mustache'
 import { getLangFromUrl } from '../i18n/utils'
 const lang = getLangFromUrl(Astro.url);
 const {delivered, delivering, registry, website } = Astro.props
-const withDates = render(delivered, {...born, day: born.day.toLocaleDateString(lang)})
+const withDates = Mustache.render(delivered, {...born, day: born.day.toLocaleDateString(lang)})
 ---
   {!born.height ? 
     <h1>
