@@ -1,13 +1,12 @@
 ---
 import Countdown from '../../components/Countdown.astro'
 import Page from '../../components/Page.astro';
-import OneSignal from '../../components/OneSignal.astro';
 import Content from '../../components/Content.astro'
 ---
 
 <Page title="Ciao Mondo, di nuovo!" content="I miei genitori hanno messo su 'sta roba. Dategli un occhio, fateli felici">
 	<Content
-		delivered="Consegnat*!"
+		delivered="Il tuo pacco di <em>{{weight}}Kg</em> e <em>{{height}}cm</em> contenente <em>{{name}}</em> è stato consegnato il <em>{{day}}</em>!"
 		delivering="In consegna!"
 		registry="Lista nascita"
 		website="Il sito di Gaia"

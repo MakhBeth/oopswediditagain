@@ -1,6 +1,7 @@
 export const born = {
-	day: undefined,
-	height: 50,
-	weigth: 3.25
+	day: new Date('3 Jun 2024'),
+	height: null,
+	weight: null,
+	name: 'Enea'
 }
 export const time = "3 Jun 2024"
