@@ -139,6 +139,7 @@ const withDates = Mustache.render(delivered, {...born, day: born.day.toLocaleDat
 				})
 			} catch (e) {
 				console.error(e)
+				window.alert("Sorry, something went wrong. Please contact dad.")
 			}
 		})
 	}
