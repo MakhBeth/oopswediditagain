@@ -79,7 +79,8 @@ const { title, content } = Astro.props as Props;
  
 	.illustration {
 		position: relative;
-		padding: 0 5vw;
+		padding: 0;
+		box-sizing: border-box;
 		width: 100%;
 		max-width: 32rem;
 	}
@@ -90,7 +91,6 @@ const { title, content } = Astro.props as Props;
 		--dimension: clamp(calc(var(--size) * 0.5em), calc(var(--size) * 2vw) ,calc(var(--size) * 1em));
 		width: var(--dimension);
 		height: var(--dimension);
-		left: calc(100vw - 100%);
 		filter: drop-shadow(1px 1px 0px #2980b9);
 	}
 
@@ -189,10 +189,6 @@ const { title, content } = Astro.props as Props;
 		stroke-width: 3px;
 		stroke: var(--bcg);
 		fill: transparent;
-	}
-
-	#scene > div {
-		margin-left: max(-10%, 0vw);
 	}
 
 	#scene, #scene > div {
