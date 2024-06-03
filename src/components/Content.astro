@@ -120,7 +120,7 @@ const withDates = Mustache.render(delivered, {...born, day: born.day.toLocaleDat
 
 <script>
 	import { countdown } from '../utils/countdown'
-  const missing = window.document.getElementById("missing");
+  	const missing = window.document.getElementById("missing");
 	const delivering = window.document.getElementById("delivering");
 	const deliveryyyyy = (kms: number) => {
 		if(kms <= 0) {
@@ -129,21 +129,25 @@ const withDates = Mustache.render(delivered, {...born, day: born.day.toLocaleDat
 		}
 	}
 	countdown.onChange(deliveryyyyy)
+</script>
+<script defer>
+	window.addEventListener("DOMContentLoaded", function() {
 
-	const share = document.querySelectorAll(".share")[0]
-	if (share && navigator.share) {
-		(share as any).style.display = "block";
-		share.addEventListener("click", () => {
-			try {
-				navigator.share({
-					url: window.location.origin,
-				})
-			} catch (e) {
-				console.error(e)
-				window.alert("Sorry, something went wrong. Please contact dad.")
-			}
-		})
-	}
-	</script>
+		const share = document.querySelectorAll(".share")[0]
+		if (share && navigator.share) {
+			(share as any).style.display = "block";
+			share.addEventListener("click", () => {
+				try {
+					navigator.share({
+						url: window.location.origin,
+					})
+				} catch (e) {
+					console.error(e)
+					window.alert("Sorry, something went wrong. Please contact dad.")
+				}
+			})
+		}
+    }, false);
+</script>
 
 
