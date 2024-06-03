@@ -123,7 +123,7 @@ const withDates = Mustache.render(delivered, {...born, day: born.day.toLocaleDat
   	const missing = window.document.getElementById("missing");
 	const delivering = window.document.getElementById("delivering");
 	const deliveryyyyy = (kms: number) => {
-		if(kms <= 0) {
+		if(kms <= 0 && missing && delivering) {
 			missing.style.display = "none";
 			delivering.style.display = "block";
 		}
