@@ -129,25 +129,21 @@ const withDates = Mustache.render(delivered, {...born, day: born.day.toLocaleDat
 		}
 	}
 	countdown.onChange(deliveryyyyy)
-</script>
-<script defer>
-	window.addEventListener("DOMContentLoaded", function() {
 
-		const share = document.querySelectorAll(".share")[0]
-		if (share && navigator.share) {
-			(share as any).style.display = "block";
-			share.addEventListener("click", () => {
-				try {
-					navigator.share({
-						url: window.location.origin,
-					})
-				} catch (e) {
-					console.error(e)
-					window.alert("Sorry, something went wrong. Please contact dad.")
-				}
-			})
-		}
-    }, false);
+	const share = document.querySelectorAll(".share")[0]
+	if (share && navigator.share) {
+		(share as any).style.display = "block";
+		share.addEventListener("click", () => {
+			try {
+				navigator.share({
+					url: window.location.origin,
+				})
+			} catch (e) {
+				console.error(e)
+				window.alert("Sorry, something went wrong. Please contact dad.")
+			}
+		})
+	}
 </script>
 
 
